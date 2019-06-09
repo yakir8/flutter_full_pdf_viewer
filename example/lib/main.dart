@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_full_pdf_viewer/full_pdf_viewer_plugin.dart';
 import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -20,6 +21,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String pathPDF = "";
+  String _url = "http://africau.edu/images/default/sample.pdf";
 
   @override
   void initState() {
@@ -51,10 +53,9 @@ class _MyAppState extends State<MyApp> {
       body: Center(
         child: RaisedButton(
           child: Text("Open PDF"),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PDFScreen(pathPDF)),
-          ),
+          onPressed: () =>
+//              PDFViewerPlugin().launchFromNetwork(_url)
+              Navigator.push(context,MaterialPageRoute(builder: (context) => PDFScreen(pathPDF)),),
         ),
       ),
     );

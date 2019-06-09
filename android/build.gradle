@@ -33,5 +33,5 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation  'com.github.barteksc:pdfium-android:1.7.1'
 }

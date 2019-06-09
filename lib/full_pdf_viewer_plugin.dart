@@ -7,16 +7,21 @@ import 'package:flutter/services.dart';
 enum PDFViewState { shouldStart, startLoad, finishLoad }
 
 class PDFViewerPlugin {
+
   final _channel = const MethodChannel("flutter_full_pdf_viewer");
+
   static PDFViewerPlugin _instance;
 
   factory PDFViewerPlugin() => _instance ??= new PDFViewerPlugin._();
+
   PDFViewerPlugin._() {
     _channel.setMethodCallHandler(_handleMessages);
   }
 
   final _onDestroy = new StreamController<Null>.broadcast();
+
   Stream<Null> get onDestroy => _onDestroy.stream;
+
   Future<Null> _handleMessages(MethodCall call) async {
     switch (call.method) {
       case 'onDestroy':
@@ -25,8 +30,9 @@ class PDFViewerPlugin {
     }
   }
 
-  Future<Null> launch(String path, {Rect rect}) async {
-    final args = <String, dynamic>{'path': path};
+  Future<Null> launch(String path, {Rect rect, bool nightMode = false,
+    double zoom = 1.0,xOffset = 0.0,yOffset = 0.0}) async {
+    final args = <String, dynamic> {'path': path};
     if (rect != null) {
       args['rect'] = {
         'left': rect.left,
@@ -35,7 +41,33 @@ class PDFViewerPlugin {
         'height': rect.height
       };
     }
+    args['nightMode'] = nightMode;
+    args['Position'] = {
+      'Zoom': zoom,
+      'XOffset': xOffset,
+      'YOffset': yOffset
+    };
     await _channel.invokeMethod('launch', args);
+  }
+
+  Future<bool> launchFromNetwork(String path, {Rect rect, bool nightMode = false,
+    double zoom = 1.0,xOffset = 0.0,yOffset = 0.0}) async {
+    final args = <String, dynamic> {'path': path};
+    if (rect != null) {
+      args['rect'] = {
+        'left': rect.left,
+        'top': rect.top,
+        'width': rect.width,
+        'height': rect.height
+      };
+    }
+    args['nightMode'] = nightMode;
+    args['Position'] = {
+      'Zoom': zoom,
+      'XOffset': xOffset,
+      'YOffset': yOffset
+    };
+    return await _channel.invokeMethod('launchFromNetwork', args);
   }
 
   /// Close the PDFViewer

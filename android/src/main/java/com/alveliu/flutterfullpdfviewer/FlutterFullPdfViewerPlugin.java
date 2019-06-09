@@ -44,6 +44,9 @@ public class FlutterFullPdfViewerPlugin implements MethodCallHandler, PluginRegi
             case "launch":
                 openPDF(call, result);
                 break;
+            case "launchFromNetwork":
+                openPdfFromNetwork(call, result);
+                break;
             case "resize":
                 resize(call, result);
                 break;
@@ -58,13 +61,26 @@ public class FlutterFullPdfViewerPlugin implements MethodCallHandler, PluginRegi
 
     private void openPDF(MethodCall call, MethodChannel.Result result) {
         String path = call.argument("path");
+        boolean nightMode = call.argument("nightMode");
+        Map<String,Object> position = call.argument("Position");
         if (flutterFullPdfViewerManager == null || flutterFullPdfViewerManager.closed) {
-            flutterFullPdfViewerManager = new FlutterFullPdfViewerManager(activity);
+            flutterFullPdfViewerManager = new FlutterFullPdfViewerManager(activity,nightMode);
         }
         FrameLayout.LayoutParams params = buildLayoutParams(call);
         activity.addContentView(flutterFullPdfViewerManager.pdfView, params);
-        flutterFullPdfViewerManager.openPDF(path);
-        result.success(null);
+        flutterFullPdfViewerManager.openPDF(path,result,position);
+    }
+
+    private void openPdfFromNetwork(MethodCall call, MethodChannel.Result result) {
+        String path = call.argument("path");
+        boolean nightMode = call.argument("nightMode");
+        Map<String,Object> position = call.argument("Position");
+        if (flutterFullPdfViewerManager == null || flutterFullPdfViewerManager.closed) {
+            flutterFullPdfViewerManager = new FlutterFullPdfViewerManager(activity,nightMode);
+        }
+        FrameLayout.LayoutParams params = buildLayoutParams(call);
+        activity.addContentView(flutterFullPdfViewerManager.pdfView, params);
+        flutterFullPdfViewerManager.openPdfFromNetwork(path,result,position);
     }
 
     private void resize(MethodCall call, final MethodChannel.Result result) {
