@@ -21,7 +21,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String pathPDF = "";
-  String _url = "http://africau.edu/images/default/sample.pdf";
+  String url = "http://africau.edu/images/default/sample.pdf";
 
   @override
   void initState() {
@@ -35,7 +35,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<File> createFileOfPdfUrl() async {
-    final url = "http://africau.edu/images/default/sample.pdf";
     final filename = url.substring(url.lastIndexOf("/") + 1);
     var request = await HttpClient().getUrl(Uri.parse(url));
     var response = await request.close();
@@ -54,7 +53,7 @@ class _MyAppState extends State<MyApp> {
         child: RaisedButton(
           child: Text("Open PDF"),
           onPressed: () =>
-//              PDFViewerPlugin().launchFromNetwork(_url)
+//              PDFViewerPlugin().launchFromNetwork(url)
               Navigator.push(context,MaterialPageRoute(builder: (context) => PDFScreen(pathPDF)),),
         ),
       ),

@@ -120,7 +120,12 @@ class FlutterFullPdfViewerManager {
                             .load();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    result.success(false);
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            result.success(false);
+                        }
+                    });
                 }
             }
         }).start();
